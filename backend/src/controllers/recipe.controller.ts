@@ -36,20 +36,18 @@ const removeFromFavorites = async (req: Request, res: Response) => {
   try {
     const { userId, recipeId } = req.params;
 
-    const newFavorite = await db
+    await db
       .delete(favoritesTable)
       .where(
         and(
           eq(favoritesTable.userId, userId),
           eq(favoritesTable.recipeId, parseInt(recipeId))
         )
-      )
-      .returning();
+      );
 
     res.status(200).json({
       success: true,
       message: "Removed From Favorites Sucessfully",
-      value: newFavorite[0],
     });
   } catch (error) {
     console.log("Error removing specified favorite");
@@ -61,5 +59,29 @@ const removeFromFavorites = async (req: Request, res: Response) => {
   }
 };
 
-export { addToFavorites, removeFromFavorites };
+const getFavoriteById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const userFavorites = await db
+      .select()
+      .from(favoritesTable)
+      .where(eq(favoritesTable.userId, userId));
+
+    res.status(200).json({
+      success: true,
+      message: "Fetched Favorites Sucessfully",
+      favorites: userFavorites,
+    });
+  } catch (error) {
+    console.log("Error retrieving favorite");
+    res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while trying to retrieve the item from the favorite list",
+    });
+  }
+};
+
+export { addToFavorites, getFavoriteById, removeFromFavorites };
 
