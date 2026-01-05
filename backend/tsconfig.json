@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2020",         /* Specify ECMAScript target version */
+    "module": "nodenext",       /* Specify module code generation */
+    "moduleResolution": "nodenext",      /**/
+    "rootDir": "./src",         /* Specify the root directory of input files */
+    "outDir": "./dist",         /* Redirect output structure to the directory */
+    "strict": true,             /* Enable all strict type-checking options */
+    "esModuleInterop": true,    /* Enables compatibility for default imports */
+    "skipLibCheck": true,       /* Skip type checking of declaration files */
+    "forceConsistentCasingInFileNames": true /* Ensure consistent file casing */
+  },
+  "include": ["src/**/*"],      /* Include only files within the src directory */
+  "exclude": ["node_modules"]   /* Exclude node_modules */
+}
