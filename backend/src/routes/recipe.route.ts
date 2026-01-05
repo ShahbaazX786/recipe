@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { addToFavorite } from "../controllers/recipe.controller.js";
+import {
+    addToFavorites,
+    removeFromFavorites,
+} from "../controllers/recipe.controller.js";
 
 const recipeRouter = Router();
 
-recipeRouter.post("/add", addToFavorite);
+recipeRouter.post("/add", addToFavorites);
+recipeRouter.delete("/:userId/:recipeId", removeFromFavorites);
 
 export default recipeRouter;
