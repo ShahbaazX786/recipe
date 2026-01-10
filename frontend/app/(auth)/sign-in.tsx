@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native";
 
-const SignInScreen = () => {
+const SignIn = () => {
   const router = useRouter();
 
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -138,4 +138,4 @@ const SignInScreen = () => {
   );
 };
 
-export default SignInScreen;
+export default SignIn;
