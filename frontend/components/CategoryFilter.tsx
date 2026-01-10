@@ -2,11 +2,17 @@ import { Image } from "expo-image";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { homeStyles } from "../assets/styles/home.styles";
 
+type CategoryFilterProps = {
+  categories: any | [];
+  selectedCategory: string | null;
+  onSelectCategory: (category: string) => void;
+};
+
 export default function CategoryFilter({
-  categories,
+  categories = [],
   selectedCategory,
   onSelectCategory,
-}) {
+}: CategoryFilterProps) {
   return (
     <View style={homeStyles.categoryFilterContainer}>
       <ScrollView
@@ -14,7 +20,7 @@ export default function CategoryFilter({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={homeStyles.categoryFilterScrollContent}
       >
-        {categories.map((category) => {
+        {categories.map((category: any) => {
           const isSelected = selectedCategory === category.name;
           return (
             <TouchableOpacity
