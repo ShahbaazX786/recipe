@@ -26,7 +26,10 @@ const RecipeDetail = () => {
     const checkIfSaved = async () => {
       try {
         const res = await fetch(`${API_URL}/favorites/${userId}`);
-        const favorites = await res.json();
+        const parsedResult = await res.json();
+        const favorites = Array.isArray(parsedResult?.favorites)
+          ? parsedResult?.favorites
+          : [];
         const isRecipeSaved = favorites.some(
           (fav: any) => fav.recipeId === parseInt(recipeId as string)
         );
@@ -65,12 +68,16 @@ const RecipeDetail = () => {
   };
 
   const handleAddFavorite = async () => {
+    if (!userId || !recipe) return;
+
     setIsSaving(true);
+
     try {
       if (isSaved) {
         const res = await fetch(`${API_URL}/favorites/${userId}/${recipeId}`, {
           method: "DELETE",
         });
+
         if (!res.ok) throw new Error("Failed to remove recipe from favorites");
         setIsSaved(false);
       } else {
@@ -81,7 +88,7 @@ const RecipeDetail = () => {
           },
           body: JSON.stringify({
             userId,
-            recipeId: parseInt(recipeId as string),
+            recipeId: Number(recipeId),
             title: recipe.title,
             image: recipe.image,
             cookTime: recipe.cookTime,
@@ -89,7 +96,11 @@ const RecipeDetail = () => {
           }),
         });
 
-        if (!res.ok) throw new Error("Failed to save recipe to favorites");
+        if (!res.ok) {
+          const err = await res.json();
+          console.error("Save Error", err);
+          throw new Error("Failed to save recipe to favorites");
+        }
         setIsSaved(true);
       }
     } catch (error) {
