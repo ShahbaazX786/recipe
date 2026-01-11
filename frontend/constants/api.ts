@@ -1,1 +1,1 @@
-export const API_URL = "http://localhost:7200/api/v1";
+export const API_URL = process.env.EXPO_PUBLIC_API_URL;
