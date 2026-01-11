@@ -81,7 +81,7 @@ const RecipeDetail = () => {
         if (!res.ok) throw new Error("Failed to remove recipe from favorites");
         setIsSaved(false);
       } else {
-        const res = await fetch(`${API_URL}/favorites`, {
+        const res = await fetch(`${API_URL}/favorites/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
