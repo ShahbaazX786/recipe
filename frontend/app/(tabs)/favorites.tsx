@@ -29,8 +29,15 @@ const Favorites = () => {
         if (!response.ok) throw new Error("Failed to fetch favorites");
 
         const favorites = await response.json();
+        if (!favorites?.success) {
+          throw new Error("Failed to fetch favorites");
+        }
 
-        const transformedFavorites = favorites.map((favorite: any) => ({
+        const favoritesArray = Array.isArray(favorites?.favorites)
+          ? favorites?.favorites
+          : [];
+
+        const transformedFavorites = favoritesArray.map((favorite: any) => ({
           ...favorite,
           id: favorite.recipeId,
         }));
