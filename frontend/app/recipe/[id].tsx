@@ -62,9 +62,16 @@ const RecipeDetail = () => {
     loadRecipeDetail();
   }, [recipeId, userId]);
 
-  const getYoutubeEmbedUrl = (url: any) => {
-    const videoId = url.split("v=")[1];
-    return `https://www.youtube.com/embed/${videoId}`;
+  const getYoutubeEmbedUrl = (url: string) => {
+    if (!url) return null;
+
+    const regExp =
+      /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&?/]+)/;
+    const match = url.match(regExp);
+
+    if (!match || !match[1]) return null;
+
+    return `https://www.youtube.com/embed/${match[1]}?rel=0&modestbranding=1`;
   };
 
   const handleAddFavorite = async () => {
@@ -230,9 +237,13 @@ const RecipeDetail = () => {
               <View style={recipeDetailStyles.videoCard}>
                 <WebView
                   style={recipeDetailStyles.webview}
-                  source={{ uri: getYoutubeEmbedUrl(recipe.youtubeUrl) }}
+                  source={{ uri: getYoutubeEmbedUrl(recipe.youtubeUrl)! }}
+                  javaScriptEnabled
+                  domStorageEnabled
                   allowsFullscreenVideo
-                  mediaPlaybackRequiresUserAction={false}
+                  mediaPlaybackRequiresUserAction={true}
+                  originWhitelist={["*"]}
+                  allowsInlineMediaPlayback
                 />
               </View>
             </View>
