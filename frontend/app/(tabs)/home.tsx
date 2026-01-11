@@ -1,5 +1,6 @@
 import { homeStyles } from "@/assets/styles/home.styles";
 import CategoryFilter from "@/components/CategoryFilter";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import RecipeCard from "@/components/RecipeCard";
 import { COLORS } from "@/constants/colors";
 import { MealAPI } from "@/services/mealAPI";
@@ -22,7 +23,7 @@ const HomeScreen = () => {
   const [recipes, setRecipes] = useState([] as any);
   const [categories, setCategories] = useState([]);
   const [featuredRecipe, setFeaturedRecipe] = useState<null | any>(null);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadData = async () => {
@@ -90,6 +91,9 @@ const HomeScreen = () => {
     loadData();
   }, []);
 
+  if (loading && !refreshing)
+    return <LoadingSpinner message="Loading delicious recipes" />;
+
   return (
     <View style={homeStyles.container}>
       <ScrollView
@@ -113,7 +117,7 @@ const HomeScreen = () => {
             style={{ width: 100, height: 100 }}
           />
           <Image
-            source={require("../../assets/images/lamb.png")}
+            source={require("../../assets/images/beef.png")}
             style={{ width: 100, height: 100 }}
           />
         </View>
